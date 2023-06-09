@@ -19,8 +19,22 @@ const getAllGames = async (req, res) => {
       }
 };
 
-// const getGamesByName = (req, res) => {
-//     const {name} = req.query.name;
-// };
+const getGamesById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      await axios.get(`${URL}/${id}?key=${KEY}`)
+      .then((response) => response.data)
+      .then((data) => {
+            if (data){
+            return res.status(200).json(data);
+            } else {
+            return res.status(404).json({ message: "ID Videogame not found" });
+            }
 
-module.exports = {getAllGames}
+      });
+    } catch (error) {
+      res.status(500).json({ message: "error" });
+    }
+};
+
+module.exports = {getAllGames, getGamesById}
